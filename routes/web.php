@@ -57,3 +57,26 @@ Route::get('/delete', function () {
     }
     return "Role deleted successfully";
 });
+
+//attaching role to user
+Route::get('/attach', function (){
+    $user = User::findOrFail(1);
+    $user->roles()->attach(2);
+    return "Role attached to user";
+});
+
+//detaching roles from user
+Route::get('/detach', function (){
+    $user= User::findOrFail(1);
+    $user->roles()->detach(2);
+    //to detach all roles from a particular user     $user->roles()->detach();
+    return "Role detached from user";
+});
+
+//syncing roles
+Route::get('/sync', function (){
+    $user= User::findOrFail(1);
+    //can pass many roles in the array separated by "," => sync([1,3]);
+    $user->roles()->sync([3]);
+    return "role no with id 3 synced to user id 1";
+});
