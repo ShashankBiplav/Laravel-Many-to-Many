@@ -21,9 +21,39 @@ Route::get('/', function () {
 });
 
 //creating data
-Route::get('/create', function (){
+Route::get('/create', function () {
     $user = User::findOrFail(1);
     $role = Role::findOrFail(1);
     $user->roles()->save($role);
-    return $user->name." role: ".$role->name." assigned successfully";
+    return $user->name . " role: " . $role->name . " assigned successfully";
+});
+
+//reading data
+Route::get('/read', function () {
+    $user = User::findOrFail(1);
+//    foreach ($user->roles as $role){
+//        dd($role->name);
+//    }
+    echo $user->roles;
+});
+
+//updating data
+Route::get('/update', function () {
+    $user = User::findOrFail(1);
+    if ($user->has('roles')) { //checking for relationship
+        foreach ($user->roles as $role) {
+            $role->name = "Editor";
+            $role->save();
+        }
+    }
+    return "role updated";
+});
+
+//deleting data
+Route::get('/delete', function () {
+    $user = User::findOrFail(1);
+    foreach ($user->roles as $role) {
+        $role->where('id', '2')->delete();
+    }
+    return "Role deleted successfully";
 });
